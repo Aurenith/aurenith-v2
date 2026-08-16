@@ -261,7 +261,6 @@ export default function ESignPage() {
                 margin: "0 auto 24px",
               }}
             >
-              ✍️
             </div>
             <h2 style={{ fontFamily: "var(--font-syne), sans-serif", fontWeight: 800, fontSize: 28, marginBottom: 12 }}>
               E-Signature Verified!
