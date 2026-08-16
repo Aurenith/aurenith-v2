@@ -1,12 +1,13 @@
-# Aurenith Team Portfolio 🚀
+# Aurenith Team Portfolio (Next.js v2) 🚀
 
-![aurenith.team](https://img.shields.io/badge/Aurenith-Team--Portfolio-7C3AED?style=for-the-badge)
+![aurenith-v2](https://img.shields.io/badge/Aurenith-v2--Next.js-7C3AED?style=for-the-badge)
 
-A lightning-fast, highly aesthetic web portfolio built for **Aurenith**—a team of 5 elite engineers who build at full speed and compete in high-stakes hackathons. Designed for maximum impact with modern UI/UX principles, glassmorphism, fluid animations, and a secure built-in admin dashboard.
+A lightning-fast, highly aesthetic web portfolio built for **Aurenith**—a team of 5 elite engineers who build at full speed and compete in high-stakes hackathons. Re-engineered in **Next.js 16 App Router** with TypeScript, Tailwind CSS v4, modern UI/UX principles, glassmorphism, fluid micro-animations, and a secure built-in admin dashboard.
 
 ## 🌟 Features
 
-- **Modern & Dynamic Design**: Stunning dark mode aesthetic with vibrant gradients, floating background orbs, and SVG noise textures.
+- **Next.js App Router Architecture**: Modular React components, SSR metadata optimizations, and clean root-level aliases (`@/components` and `@/types`).
+- **Modern & Dynamic Design**: Dark mode aesthetic with vibrant gradients, floating background orbs, and SVG noise textures.
 - **Custom Interactions**: A custom trailing cursor effect, hover micro-animations, and smooth scroll-based navigation blur states.
 - **Fully Responsive**: Flawless experience across desktop, tablet, and mobile devices (featuring a custom frosted glass mobile menu).
 - **Team Roster**: Display cards for each member highlighting their role, bio, and technical skills with intelligent fallback avatars.
@@ -15,35 +16,44 @@ A lightning-fast, highly aesthetic web portfolio built for **Aurenith**—a team
 
 ## 🛠️ Technology Stack
 
-- **Core**: React.js
-- **Build Tool**: Vite
-- **Styling**: Vanilla CSS embedded and inline mapped with modern grid layouts and responsive media queries.
-- **Typography**: Google Fonts (*Syne* for heavy striking headings, *DM Sans* for clean legible body text).
+- **Framework**: Next.js 16 (App Router)
+- **Library**: React 19
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS v4 & Vanilla CSS Design Tokens
+- **Typography**: Google Fonts (*Syne* for heavy striking headings, *DM Sans* for clean body text)
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-Make sure you have [Node.js](https://nodejs.org/) installed on your machine.
+Make sure you have [Node.js](https://nodejs.org/) (v18+) or [Bun](https://bun.sh/) installed on your machine.
 
 ### Installation
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/Aurenith/aurenith.team.git
+   git clone https://github.com/Aurenith/aurenith-v2.git
    ```
 2. Navigate into the project directory:
    ```bash
-   cd aurenith.team
+   cd aurenith-v2
    ```
 3. Install the required dependencies:
    ```bash
    npm install
+   # or
+   bun install
    ```
 4. Start the development server:
    ```bash
    npm run dev
+   # or
+   bun dev
    ```
-5. Open your browser and navigate to `http://localhost:5173`.
+5. Open your browser and navigate to `http://localhost:3000`.
+
+## ⚙️ CI/CD & Lockfile Support
+
+This repository supports both `npm` (`package-lock.json`) and `bun` (`bun.lock`) for automated deployment pipelines (such as GitHub Actions `actions/setup-node`).
 
 ## 🔐 Admin Dashboard
 
