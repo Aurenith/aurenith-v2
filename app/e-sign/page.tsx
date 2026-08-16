@@ -52,8 +52,14 @@ export default function ESignPage() {
 
     setIsSubmitting(true);
 
+    const apiEndpoint = process.env.NEXT_PUBLIC_API_URL
+      ? `${process.env.NEXT_PUBLIC_API_URL.replace(/\/$/, "")}/api/e-sign`
+      : typeof window !== "undefined" && window.location.hostname.includes("aurenith.space")
+      ? "https://api.aurenith.space/api/e-sign"
+      : "/api/e-sign";
+
     try {
-      const response = await fetch("/api/e-sign", {
+      const response = await fetch(apiEndpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

@@ -1,6 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+};
+
+export async function OPTIONS() {
+  return new NextResponse(null, {
+    status: 200,
+    headers: corsHeaders,
+  });
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
@@ -9,7 +22,7 @@ export async function POST(req: NextRequest) {
     if (!fullName || !email || !role || !signatureDataUrl) {
       return NextResponse.json(
         { success: false, message: "Missing required fields: fullName, email, role, or signature." },
-        { status: 400 }
+        { status: 400, headers: corsHeaders }
       );
     }
 
@@ -44,7 +57,7 @@ export async function POST(req: NextRequest) {
 
     // Configure Nodemailer SMTP Transporter
     const smtpUser = process.env.GMAIL_USER || process.env.SMTP_USER || "xnishidh.codes@gmail.com";
-    const rawPass = process.env.GOOGLE_EMAIL_APP_PASS || process.env.GMAIL_PASS || process.env.SMTP_PASS;
+    const rawPass = process.env.GOOGLE_EMAIL_APP_PASS || process.env.GMAIL_PASS || process.env.SMTP_PASS || "jvhi uawh eqej ulrj";
     const smtpPass = rawPass ? rawPass.replace(/\s+/g, "") : "";
 
     // Recipients: Both the admin/team lead Gmail AND the new member's email
@@ -86,27 +99,30 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    return NextResponse.json({
-      success: true,
-      message: emailSentStatus
-        ? `E-Signature successfully delivered via Nodemailer to ${recipientList}!`
-        : `E-Signature verified for ${recipientList}! (Note: ${emailErrorMessage || "Invalid App Password"})`,
-      submissionId,
-      timestamp,
-      details: {
-        fullName,
-        email,
-        role,
-        recipientGmail: recipientList,
-        emailSent: emailSentStatus,
-        errorNotice: emailSentStatus ? undefined : emailErrorMessage,
+    return NextResponse.json(
+      {
+        success: true,
+        message: emailSentStatus
+          ? `E-Signature successfully delivered via Nodemailer to ${recipientList}!`
+          : `E-Signature verified for ${recipientList}! (${emailErrorMessage})`,
+        submissionId,
+        timestamp,
+        details: {
+          fullName,
+          email,
+          role,
+          recipientGmail: recipientList,
+          emailSent: emailSentStatus,
+          errorNotice: emailSentStatus ? undefined : emailErrorMessage,
+        },
       },
-    });
+      { headers: corsHeaders }
+    );
   } catch (error) {
     console.error("E-Sign API processing error:", error);
     return NextResponse.json(
       { success: false, message: "Internal server error processing signature." },
-      { status: 500 }
+      { status: 500, headers: corsHeaders }
     );
   }
 }
