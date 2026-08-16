@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 
 interface NavbarProps {
   onAdminClick: () => void;
@@ -90,6 +91,13 @@ export default function Navbar({ onAdminClick }: NavbarProps) {
               {label}
             </button>
           ))}
+          <Link
+            href="/e-sign"
+            className="nav-link"
+            style={{ color: "#A78BFA" }}
+          >
+            E-Sign ✍️
+          </Link>
           <button
             className="ghost-btn"
             style={{ fontSize: 11, padding: "8px 20px" }}
@@ -123,6 +131,14 @@ export default function Navbar({ onAdminClick }: NavbarProps) {
             {label}
           </button>
         ))}
+        <Link
+          href="/e-sign"
+          className="nav-link"
+          style={{ color: "#A78BFA", fontSize: 28 }}
+          onClick={() => setMobileMenuOpen(false)}
+        >
+          E-Sign ✍️
+        </Link>
         <button
           className="glow-btn"
           style={{ fontSize: 14, padding: "14px 32px", marginTop: 24 }}

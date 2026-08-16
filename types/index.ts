@@ -25,6 +25,29 @@ export interface Hackathon {
   highlight?: boolean;
 }
 
+export interface ESignFormData {
+  fullName: string;
+  email: string;
+  role: string;
+  joinedDate: string;
+  recipientGmail: string;
+  signatureDataUrl: string;
+  agreedToTerms: boolean;
+}
+
+export interface ESignResponse {
+  success: boolean;
+  message: string;
+  submissionId?: string;
+  timestamp?: string;
+  details?: {
+    fullName: string;
+    email: string;
+    role: string;
+    recipientGmail: string;
+  };
+}
+
 export const ADMIN_PASS = "aurenith2024";
 
 export const TEAM_MEMBERS_DEFAULT: TeamMember[] = [
