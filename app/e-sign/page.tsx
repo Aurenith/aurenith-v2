@@ -52,14 +52,8 @@ export default function ESignPage() {
 
     setIsSubmitting(true);
 
-    const apiEndpoint = process.env.NEXT_PUBLIC_API_URL
-      ? `${process.env.NEXT_PUBLIC_API_URL.replace(/\/$/, "")}/api/e-sign`
-      : typeof window !== "undefined" && window.location.hostname.includes("aurenith.space")
-      ? "https://api.aurenith.space/api/e-sign"
-      : "/api/e-sign";
-
     try {
-      const response = await fetch(apiEndpoint, {
+      const response = await fetch("/api/e-sign", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -72,62 +66,16 @@ export default function ESignPage() {
         }),
       });
 
-      if (response.ok) {
-        const data: ESignResponse = await response.json();
+      const data: ESignResponse = await response.json();
+
+      if (data.success) {
         setSuccessResult(data);
       } else {
-        // Fallback for static exports (e.g. GitHub Pages) where /api routes return 404
-        const timestamp = new Date().toISOString();
-        const submissionId = `AURENITH-ESIGN-${Date.now()}`;
-        const targetEmail = recipientGmail.trim() || "xnishidh.codes@gmail.com";
-        const memberEmail = email.trim();
-        const recipientList = `${targetEmail}, ${memberEmail}`;
-
-        const mailtoSubject = encodeURIComponent(`🏆 New Member E-Signature: ${fullName.trim()} (${finalRole.trim()})`);
-        const mailtoBody = encodeURIComponent(
-          `AURENITH TEAM E-SIGNATURE AGREEMENT\n\nMember Name: ${fullName.trim()}\nMember Email: ${memberEmail}\nRole: ${finalRole.trim()}\nJoined Date: ${joinedDate}\nDocument Ref: ${submissionId}\n\nDigital Signature recorded.`
-        );
-
-        setSuccessResult({
-          success: true,
-          message: `E-Signature verified & recorded for ${fullName.trim()}! Signed document receipt generated for ${recipientList}.`,
-          submissionId,
-          timestamp,
-          details: {
-            fullName: fullName.trim(),
-            email: memberEmail,
-            role: finalRole.trim(),
-            recipientGmail: recipientList,
-          },
-        });
-
-        // Trigger mailto email dispatch on static site host
-        try {
-          window.open(`mailto:${targetEmail}?cc=${encodeURIComponent(memberEmail)}&subject=${mailtoSubject}&body=${mailtoBody}`, "_blank");
-        } catch {
-          // Ignore popup block
-        }
+        setErrorMsg(data.message || "Failed to process e-signature via Nodemailer.");
       }
-    } catch {
-      // Offline or static host fallback
-      const timestamp = new Date().toISOString();
-      const submissionId = `AURENITH-ESIGN-${Date.now()}`;
-      const targetEmail = recipientGmail.trim() || "xnishidh.codes@gmail.com";
-      const memberEmail = email.trim();
-      const recipientList = `${targetEmail}, ${memberEmail}`;
-
-      setSuccessResult({
-        success: true,
-        message: `E-Signature verified & recorded for ${fullName.trim()}!`,
-        submissionId,
-        timestamp,
-        details: {
-          fullName: fullName.trim(),
-          email: memberEmail,
-          role: finalRole.trim(),
-          recipientGmail: recipientList,
-        },
-      });
+    } catch (err) {
+      console.error("Nodemailer submission error:", err);
+      setErrorMsg("Failed to connect to Nodemailer server API (/api/e-sign).");
     } finally {
       setIsSubmitting(false);
     }
@@ -239,7 +187,7 @@ export default function ESignPage() {
             E-Sign Agreement
           </h1>
           <p style={{ fontSize: 15, color: "rgba(255,255,255,0.45)", maxWidth: 540, margin: "0 auto", lineHeight: 1.6 }}>
-            Welcome to Aurenith. Complete your digital signature and pledge to officially join the engineering roster. Signed copies will be delivered to both your email address and the admin Gmail.
+            Welcome to Aurenith. Complete your digital signature and pledge to officially join the engineering roster. Signed copies will be delivered to both your email address and the admin Gmail via Nodemailer.
           </p>
         </div>
 
@@ -267,9 +215,10 @@ export default function ESignPage() {
                 margin: "0 auto 24px",
               }}
             >
+              ✍️
             </div>
             <h2 style={{ fontFamily: "var(--font-syne), sans-serif", fontWeight: 800, fontSize: 28, marginBottom: 12 }}>
-              E-Signature Verified!
+              E-Signature Delivered!
             </h2>
             <p style={{ fontSize: 14, color: "rgba(255,255,255,0.6)", marginBottom: 24 }}>
               {successResult.message}
@@ -604,7 +553,7 @@ export default function ESignPage() {
                   opacity: isSubmitting ? 0.6 : 1,
                 }}
               >
-                {isSubmitting ? "Processing & Delivering E-Signature..." : "✍️ Complete E-Sign & Send to Gmail"}
+                {isSubmitting ? "Sending via Nodemailer..." : "✍️ Send E-Signature via Nodemailer"}
               </button>
             </div>
           </form>

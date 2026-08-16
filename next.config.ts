@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: "export",
+  // Enabled dynamic Node.js server routes for Vercel & Nodemailer API execution
   images: {
     unoptimized: true,
   },
